@@ -4,7 +4,8 @@ import time
 import random
 
 def run(code):
-    variables = {}  
+    variables = {}
+    functionss = {}
     inside_if = False
     run_block = True
     loop_count = 0
@@ -38,6 +39,20 @@ def run(code):
                     print(text[1:-1])
                 else:
                     errors.handle(line, 'Error: speech marks not found.')
+        
+        elif line.startswith("night ") and line.endswith("{"):
+            name = line[6: -1].strip()
+            
+            function_lines = []
+            function_start = line_index + 1
+            
+            while line_index < len(lines):
+                function_line = lines[line_index]
+                if function_line == "}":
+                    break
+                function_lines.append(function_line)
+                line_index += 1
+            functionss[name] = function_lines
 
         # INPUT
 
@@ -301,6 +316,14 @@ def run(code):
                     errors.handle(line_index, "Random library already disabled.")
             else:
                 errors.handle(line_index, "Invalid library")
+        
+        elif line.endswith("()")
+            name = line[:-2]
+            if name in functionss:
+                run("\n".join(functionss[name]))
+            else:
+                errors.handle(line_index, f"Function {name} not found.")
+                
         else:
             print(f"Unknown command: Line {line_index + 1}")
         
