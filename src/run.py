@@ -1,7 +1,7 @@
 import errors
 import functions
 import time
-
+import random
 
 def run(code):
     variables = {}  
@@ -12,6 +12,7 @@ def run(code):
     line_index = 0
     maths = False
     wait = False
+    random = False
 
     lines= code.splitlines()
 
@@ -209,8 +210,8 @@ def run(code):
             if maths == True:
                 values = line[9:-1].split()
 
-                left = variables[0].split()
-                right = variables[1].split()
+                left = values[0].split()
+                right = values[1].split()
 
                 if left in variables:
                     left = variables[left]
@@ -227,8 +228,8 @@ def run(code):
             if maths == True:
                 values = line[7:-1].split()
 
-                left = variables[0].split()
-                right = variables[1].split()
+                left = values[0].split()
+                right = values[1].split()
 
                 if left in variables:
                     left = variables[left]
@@ -250,7 +251,24 @@ def run(code):
                 time.sleep(seconds)
             else:
                 errors.handle(line_index, "Wait module not found, try using `get wait`")
+            
+        elif line.startswith("randint(") and line.endswith(")"):
+            if wait == True:
+                ints = line(8: -1).split()
                 
+                intI = ints[0].split()
+                intII = ints[1].split()
+                
+                if intI in variables:
+                    intI = variables[intI]
+                if intII in variables:
+                    intII = variables[intII]
+                rI = int(intI)
+                rII = int(intII)
+                num = random.randint(rI, rII)
+                print(num)
+            else:
+                errors.handle(line_index, "Random module not found. Try using `get random`.")
 
         elif line.startswith("get"):
             lib = line[4:].strip()
@@ -258,6 +276,8 @@ def run(code):
                 maths = True
             elif lib == "wait":
                 wait = True
+            elif lib == "random":
+                random = True
             else:
                 errors.handle(line_index, "Library not found.")
             line_index += 1
@@ -274,6 +294,13 @@ def run(code):
                     wait = False
                 else:
                     errors.handle(line_index, "Wait library already disabled!")
+            elif lib == "random":
+                if random == True:
+                    random = False
+                else:
+                    errors.handle(line_index, "Random library already disabled.")
+            else:
+                errors.handle(line_index, "Invalid library")
         else:
             print(f"Unknown command: Line {line_index + 1}")
         
