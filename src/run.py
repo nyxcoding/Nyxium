@@ -269,7 +269,7 @@ def run(code):
             
         elif line.startswith("randint(") and line.endswith(")"):
             if wait == True:
-                ints = line(8: -1).split()
+                ints = line[8: -1].split()
                 
                 intI = ints[0].split()
                 intII = ints[1].split()
@@ -317,7 +317,7 @@ def run(code):
             else:
                 errors.handle(line_index, "Invalid library")
         
-        elif line.endswith("()")
+        elif line.endswith("()"):
             name = line[:-2]
             if name in functionss:
                 run("\n".join(functionss[name]))
