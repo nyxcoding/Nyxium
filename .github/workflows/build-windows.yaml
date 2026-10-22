@@ -1,0 +1,56 @@
+name: Build Nyxium for Windows
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out Nyxium
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyinstaller discord.py
+
+      - name: Build standalone executable
+        run: >-
+          pyinstaller --noconfirm --clean --onefile --console
+          --name nyxium
+          --paths src
+          --collect-all discord
+          --collect-all aiohttp
+          src/main.py
+
+      - name: Smoke-test executable
+        shell: pwsh
+        run: |
+          if (!(Test-Path "dist/nyxium.exe")) {
+            throw "Build did not produce dist/nyxium.exe"
+          }
+
+          $output = & ".\dist\nyxium.exe" 2>&1 | Out-String
+          Write-Output $output
+
+          if ($output -notmatch "Usage: nyxium <file\.nyx>") {
+            throw "Executable did not show the expected usage message."
+          }
+
+      - name: Upload Windows executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: nyxium-windows
+          path: dist/nyxium.exe
+          if-no-files-found: error
