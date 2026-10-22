@@ -2,4 +2,4 @@
 
 Please note! This project is new, and is missing core functions which are to be added!
 
-Website: Thttps://nyxium.nyxcoding.xyz
+Website: https://nyxium.nyxcoding.xyz
