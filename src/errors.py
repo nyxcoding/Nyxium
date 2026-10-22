@@ -1,2 +1,4 @@
 def handle(line, message):
-    print(f"Nyxium line {line}: {message}")
+    PURPLE = "\033[35m"
+    RESET = "\033[0m"
+    print(f"{PURPLE}Nyxium line {line}: {message}{RESET}")

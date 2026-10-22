@@ -14,4 +14,4 @@ if not filename.endswith(".nyx"):
 with open(filename, "r") as file:
     code = file.read()
 
-RUUN.run(code)
+run.run(code)
