@@ -1,0 +1,13 @@
+night Calculator(){
+    get math
+    say("====================")
+    say("=NYXIUM=CALCLULATOR=")
+    say("====================")
+    say("Enter integer one")
+    input x
+    say("Enter integer 2")
+    input y
+    add(x, y)
+}
+
+Calculator()
